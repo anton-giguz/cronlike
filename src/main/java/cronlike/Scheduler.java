@@ -27,8 +27,10 @@ public class Scheduler {
         table.add( 0, "sleep 15");
         table.add(20, "pwd");
         table.add(10, "true");
-        table.add(55, "ls > `date`.txt");
+        table.add(45, "/dev/null");
+        table.add(55, "ls > dir.txt");
         System.out.println("[INFO] Time table: " + table);
+        Recorder.init();
         System.out.println("[INFO] Scheduler configured at: " + new Date());
     }
 

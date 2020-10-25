@@ -23,7 +23,7 @@ public class Task implements Runnable {
             //Process process = builder.start();
             //Process process = Runtime.getRuntime().exec(command);
             Process process = Runtime.getRuntime().exec(new String[]{"sh", "-c", command});
-            System.out.println("[INFO] Task [" + command + "] started at: " + new Date());
+            Recorder.info(command, "START-OK");
             try (BufferedReader stdout = new BufferedReader(new InputStreamReader(process.getInputStream()));
                  BufferedReader stderr = new BufferedReader(new InputStreamReader(process.getErrorStream()))) {
                 readOutput(stdout, "[INFO] [" + command + "] [stdout] ");
@@ -31,9 +31,9 @@ public class Task implements Runnable {
                 try {
                     int exitCode = process.waitFor();
                     if (exitCode == 0) {
-                        System.out.println("[INFO] Task [" + command + "] finished successfully at: " + new Date());
+                        Recorder.info(command, "FINISH-OK");
                     } else {
-                        System.err.println("[ERROR] Task [" + command + "] finished with exit code " + exitCode + " at: " + new Date());
+                        Recorder.error(command, "FINISH-ERROR", String.valueOf(exitCode));
                     }
                 } catch(InterruptedException e) {
                     Thread.currentThread().interrupt();
@@ -42,7 +42,7 @@ public class Task implements Runnable {
                 System.err.println("[ERROR] Output of [" + command + "] cannot be read: " + e);
             }
         } catch(IOException e) {
-            System.err.println("[ERROR] Task [" + command + "] cannot start: " + e);
+            Recorder.error(command, "START-ERROR", e.toString());
         }
     }
 
