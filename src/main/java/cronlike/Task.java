@@ -39,7 +39,7 @@ public class Task implements Runnable {
                     Thread.currentThread().interrupt();
                 }
             } catch(IOException e) {
-                System.err.println("[ERROR] Output of [" + command + "] cannot be read: " + e);
+                System.err.println("[WARNING] Output of [" + command + "] cannot be read: " + e);
             }
         } catch(IOException e) {
             Recorder.error(command, "START-ERROR", e.toString());
