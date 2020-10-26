@@ -11,8 +11,8 @@ public class Database {
 
     private static final SQLiteConnectionPoolDataSource datasource = new SQLiteConnectionPoolDataSource();
 
-    static {
-        datasource.setUrl("jdbc:sqlite:cronlike.db");
+    public static void init(String database) {
+        datasource.setUrl("jdbc:sqlite:" + database);
     }
 
     public static DataSource getDataSource() {

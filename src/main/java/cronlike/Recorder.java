@@ -25,13 +25,17 @@ public class Recorder {
 
     private static final boolean DEBUG = true;
 
+    private static String fileName;
+    private static Logger logger;
+
     private static final ConfigurationBuilder<BuiltConfiguration> builder = ConfigurationBuilderFactory.newConfigurationBuilder();
     private static final RootLoggerComponentBuilder rootLoggerBuilder = builder.newRootLogger(Level.INFO);
     private static final LayoutComponentBuilder patternLayoutBuilder = builder.newLayout("PatternLayout")
         .addAttribute("pattern", "%date{yyyy-MM-dd HH:mm:ss} [%map{command}] %map{result} %map{details}%n");
-    private static final Logger logger;
 
-    static {
+    public static void init(String logFile, String database) {
+        fileName = logFile;
+
         if (DEBUG) {
             addConsoleAppender();
         }
@@ -41,7 +45,14 @@ public class Recorder {
         builder.add(rootLoggerBuilder);
         logger = Configurator.initialize(builder.build()).getRootLogger();
 
-        setupJdbcAppender();
+        if (database == null) {
+            System.err.println("[WARNING] No database configured");
+        } else {
+            Database.init(database);
+            setupJdbcAppender();
+        }
+
+        System.out.println("[INFO] Recorder initialized");
     }
 
     private static void addConsoleAppender() {
@@ -52,7 +63,7 @@ public class Recorder {
     }
 
     private static void addFileAppender() {
-        AppenderComponentBuilder fileAppenderBuilder = builder.newAppender("File", "FILE").addAttribute("fileName", "cronlike.log");
+        AppenderComponentBuilder fileAppenderBuilder = builder.newAppender("File", "FILE").addAttribute("fileName", fileName);
         fileAppenderBuilder.add(patternLayoutBuilder);
         builder.add(fileAppenderBuilder);
         rootLoggerBuilder.add(builder.newAppenderRef("File"));
@@ -78,10 +89,6 @@ public class Recorder {
 
     private static ColumnMapping column(String name, String pattern) {
         return ColumnMapping.newBuilder().setName(name).setPattern(pattern).build();
-    }
-
-    public static void init() {
-        System.out.println("[INFO] Recorder initialized");
     }
 
     public static void info(String command, String result) {

@@ -13,8 +13,8 @@ import java.util.regex.Pattern;
  */
 public class Configurer {
 
-    public static void readConfFile(TimeTable table, String fileName) {
-        try (BufferedReader reader = Files.newBufferedReader(Paths.get(fileName))) {
+    public static void readConfFile(TimeTable table, String confFile) {
+        try (BufferedReader reader = Files.newBufferedReader(Paths.get(confFile))) {
             Pattern pattern = Pattern.compile("^\\s*(\\d+)\\s+(.+)$");
             String line;
             while ((line = reader.readLine()) != null) {
