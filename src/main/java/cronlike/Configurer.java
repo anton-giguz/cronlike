@@ -15,7 +15,7 @@ public class Configurer {
 
     public static void readConfFile(TimeTable table, String fileName) {
         try (BufferedReader reader = Files.newBufferedReader(Paths.get(fileName))) {
-            Pattern pattern = Pattern.compile("^\\s*(\\d+)\\s+(.*)$");
+            Pattern pattern = Pattern.compile("^\\s*(\\d+)\\s+(.+)$");
             String line;
             while ((line = reader.readLine()) != null) {
                 Matcher matcher = pattern.matcher(line);
