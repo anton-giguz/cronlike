@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class Scheduler {
 
-    private static final boolean DEBUG = true;
+    public static final boolean DEBUG = false;
 
     private static String confFile;
     private static String logFile;
@@ -39,12 +39,14 @@ public class Scheduler {
 
     private static void configure() {
         Configurer.readConfFile(table, confFile);
-        System.out.println("[INFO] Time table: " + table);
+        if (DEBUG) {
+            System.out.println("[INFO] Time table: " + table);
+        }
         Recorder.init(logFile, database);
-        System.out.println("[INFO] Scheduler configured at: " + new Date());
     }
 
     private static void run() {
+        System.out.println("[INFO] Scheduler started at: " + new Date());
         ScheduledExecutorService exec = Executors.newScheduledThreadPool(1);
         exec.scheduleAtFixedRate(new Iteration(table), getInitialDelay(), getPeriod(), TimeUnit.SECONDS);
     }

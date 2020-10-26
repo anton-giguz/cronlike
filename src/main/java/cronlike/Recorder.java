@@ -17,13 +17,13 @@ import org.apache.logging.log4j.core.config.builder.api.RootLoggerComponentBuild
 import org.apache.logging.log4j.core.config.builder.impl.BuiltConfiguration;
 import org.apache.logging.log4j.message.StringMapMessage;
 
+import static cronlike.Scheduler.DEBUG;
+
 /**
  * Logging to various destinations
  *
  */
 public class Recorder {
-
-    private static final boolean DEBUG = true;
 
     private static String fileName;
     private static Logger logger;
@@ -52,7 +52,9 @@ public class Recorder {
             setupJdbcAppender();
         }
 
-        System.out.println("[INFO] Recorder initialized");
+        if (DEBUG) {
+            System.out.println("[INFO] Recorder initialized");
+        }
     }
 
     private static void addConsoleAppender() {

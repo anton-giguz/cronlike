@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ExecutorService;
 
+import static cronlike.Scheduler.DEBUG;
+
 /**
  * Iteration occurring every minute
  *
@@ -21,7 +23,9 @@ public class Iteration implements Runnable {
 
     public void run() {
         List<String> commands = table.getCommands(Calendar.getInstance());
-        System.out.println("[INFO] Iteration at " + new Date() + " found commands: " + commands);
+        if (DEBUG) {
+            System.out.println("[INFO] Iteration at " + new Date() + " found commands: " + commands);
+        }
         for (String command : commands) {
             exec.execute(new Task(command));
         }

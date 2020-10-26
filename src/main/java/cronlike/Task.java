@@ -5,6 +5,8 @@ import java.io.InputStreamReader;
 import java.io.IOException;
 import java.util.Date;
 
+import static cronlike.Scheduler.DEBUG;
+
 /**
  * Task to run at scheduled times
  *
@@ -47,9 +49,15 @@ public class Task implements Runnable {
     }
 
     private void readOutput(BufferedReader reader, String prefix) throws IOException {
-        String line;
-        while ((line = reader.readLine()) != null) {
-            System.out.println(prefix + line);
+        if (DEBUG) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                System.out.println(prefix + line);
+            }
+        } else {
+            while (reader.readLine() != null) {
+                // ignore
+            }
         }
     }
 
