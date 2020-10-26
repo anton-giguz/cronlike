@@ -23,12 +23,7 @@ public class Scheduler {
     }
 
     private static void configure() {
-        table.add(10, "false");
-        table.add( 0, "sleep 15");
-        table.add(20, "pwd");
-        table.add(10, "true");
-        table.add(45, "/dev/null");
-        table.add(55, "ls > dir.txt");
+        Configurer.readConfFile(table, "cronlike.conf");
         System.out.println("[INFO] Time table: " + table);
         Recorder.init();
         System.out.println("[INFO] Scheduler configured at: " + new Date());
