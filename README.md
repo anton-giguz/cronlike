@@ -11,6 +11,7 @@ mvn package
 <minutes> <command>
 ...
 ```
+* If `<command>` contains a non-escaped percent sign (that is, `%` not preceded by `\`), all data after the first `%` will be sent to the command as standard input. Percent signs in the data will be replaced with newlines unless escaped.
 
 3. Prepare an SQLite database (if necessary):
 ```
@@ -27,13 +28,24 @@ java -jar target/cronlike.jar <config> <log> [<database>]
   - `<database>` - database for logging (optional)
 
 
-## Example
+## Examples
 
-This line in the configuration file
+1. This line in the configuration file
 ```
 40 mktemp -p ~
 ```
 creates a new temporary file in the home directory each hour, specifically at 00h40m, 01h40m, 02h40m, etc.
+
+2. The line
+```
+0 mail -s Reminder me@example.com %Hi,%%Don't forget to make a break!%
+```
+sends a mail at the start of each hour with the following contents:
+```
+Hi,
+
+Don't forget to make a break!
+```
 
 
 ## Log format
@@ -65,7 +77,7 @@ For example:
 
 ### Database
 
-A log event inserts a new row in the table `log` that has these columns:
+A log event inserts a new row into the table `log` that has these columns:
 * `date    TEXT` as `yyyy-MM-dd HH:mm:ss`
 * `command TEXT` as is
 * `result  TEXT` - same as in file
